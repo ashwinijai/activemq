@@ -32,12 +32,9 @@ public class MqConsumer {
             content = fileModel.getContent();
             fileName = fileModel.getFileName();
         } else if (message instanceof BytesMessage) {
-            BytesMessage byteMessage = (BytesMessage) message;
-            content = new byte[(int) byteMessage.getBodyLength()];
-            byteMessage.readBytes(content);
+            content = message.getBody(byte[].class);
+            fileName = message.getStringProperty("fileName");
         }
-        if (null == fileName)
-            fileName = "uploadedfile.pdf";
         if (null != content) {
             File outputFile = new File(fileName);
             log.info("File created with name - {}", fileName);
