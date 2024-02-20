@@ -39,6 +39,7 @@ public class MqProducer {
             @Override
             public Message createMessage(Session session) throws JMSException {
                 BytesMessage bytesMessage = session.createBytesMessage();
+                bytesMessage.setStringProperty("fileName", file.getOriginalFilename());
                 bytesMessage.writeBytes(content);
                 return bytesMessage;
             }
