@@ -25,11 +25,19 @@ public class MqProducer {
     @Value("${input.queue}")
     String queueName;
 
+    @Value("${string.queue}")
+    String stringQueueName;
+
     public void sendObjectMessageToMq(MultipartFile file) throws IOException{
         FileRequest fileModel = new FileRequest();
         fileModel.setContent(file.getBytes());
         fileModel.setFileName(file.getOriginalFilename());
         jmsTemplate.convertAndSend(queueName,fileModel);
+        log.info("Message sent to MQ");
+    }
+
+    public void sendStringMessageToMq(String message) throws IOException{
+        jmsTemplate.convertAndSend(stringQueueName,message);
         log.info("Message sent to MQ");
     }
 

@@ -22,6 +22,9 @@ public class MqConsumer {
     @Value("${input.queue}")
     String queueName;
 
+    @Value("${string.queue}")
+    String stringQueueName;
+
     @JmsListener(destination = "${input.queue}")
     public void onMessageReceived(final Message message) throws JMSException, IOException {
         log.info("Message consumed from {} queue", queueName);
@@ -43,6 +46,12 @@ public class MqConsumer {
                 log.info("File written successfully");
             }
         }
+    }
+    @JmsListener(destination = "${string.queue}")
+    public void onStringMessage(final Message message) throws JMSException, IOException {
+        log.info("Message consumed from {} queue", stringQueueName);
+        String messageString = message.getBody(String.class);
+        log.info("Consumed Message - "+messageString);
     }
 }
 
